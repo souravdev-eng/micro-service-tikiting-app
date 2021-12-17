@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import 'express-async-errors';
 import { NotFoundError } from './errors/not-found-error';
 import { errorHandler } from './middleware/error-handler';
@@ -23,6 +24,17 @@ app.all('*', async () => {
 });
 app.use(errorHandler);
 
-app.listen(3000, () => {
-  console.log('Listening auth in PORT --> 3000...');
-});
+const start = async () => {
+  try {
+    await mongoose.connect('mongodb://auth-mongo-srv/auth');
+    console.log('Auth DB connected successfully...');
+  } catch (error: any) {
+    console.error(error.message);
+  }
+
+  app.listen(3000, () => {
+    console.log('Listening auth in PORT --> 3000...');
+  });
+};
+
+start();
