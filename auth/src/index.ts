@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import 'express-async-errors';
+import cookieSession from 'cookie-session';
 import { NotFoundError } from './errors/not-found-error';
 import { errorHandler } from './middleware/error-handler';
 import { currentUserRoute } from './routes/current-user';
@@ -10,8 +11,17 @@ import { signupRoute } from './routes/signup';
 
 const app = express();
 
-app.use(express.json());
+app.set('trust proxy', true);
 
+app.use(express.json());
+app.use(
+  cookieSession({
+    // Disable encrypted
+    signed: false,
+    // Only access http connection
+    secure: true,
+  })
+);
 // routes
 app.use(currentUserRoute);
 app.use(signinRoute);
@@ -25,6 +35,9 @@ app.all('*', async () => {
 app.use(errorHandler);
 
 const start = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error('JWT_KEY must be present');
+  }
   try {
     await mongoose.connect('mongodb://auth-mongo-srv/auth');
     console.log('Auth DB connected successfully...');

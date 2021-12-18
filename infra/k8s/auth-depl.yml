@@ -15,6 +15,12 @@ spec:
       containers:
         - name: auth
           image: souravdeveloper/auth
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrect
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service
