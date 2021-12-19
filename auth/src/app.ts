@@ -1,0 +1,37 @@
+import 'express-async-errors';
+import express from 'express';
+import cookieSession from 'cookie-session';
+
+import { currentUserRoute } from './routes/current-user';
+import { NotFoundError } from './errors/not-found-error';
+import { errorHandler } from './middleware/error-handler';
+import { signOutRoute } from './routes/signout';
+import { signinRoute } from './routes/signin';
+import { signupRoute } from './routes/signup';
+
+const app = express();
+
+app.set('trust proxy', true);
+
+app.use(express.json());
+app.use(
+  cookieSession({
+    // Disable encrypted
+    signed: false,
+    // Only access http connection
+    secure: true,
+  })
+);
+// routes
+app.use(currentUserRoute);
+app.use(signinRoute);
+app.use(signupRoute);
+app.use(signOutRoute);
+
+// Global error handler
+app.all('*', async () => {
+  new NotFoundError();
+});
+app.use(errorHandler);
+
+export { app };
