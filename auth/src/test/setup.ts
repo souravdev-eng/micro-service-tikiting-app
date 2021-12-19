@@ -1,27 +1,45 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-
+import request from 'supertest';
 import { app } from '../app';
 
-let mongo: any;
+declare global {
+  function signup(): Promise<string[]>;
+}
 
-// Before all test happening
+let mongo: any;
 beforeAll(async () => {
+  process.env.JWT_KEY = 'asdfasdf';
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
   mongo = new MongoMemoryServer();
   const mongoUri = await mongo.getUri();
+
   await mongoose.connect(mongoUri);
 });
 
-// Before each test run
 beforeEach(async () => {
-  const collection = await mongoose.connection.db.collections();
-  for (const collections of collection) {
-    await collections.deleteMany({});
+  const collections = await mongoose.connection.db.collections();
+
+  for (let collection of collections) {
+    await collection.deleteMany({});
   }
 });
 
-// After all test
 afterAll(async () => {
   await mongo.stop();
   await mongoose.connection.close();
 });
+
+global.signup = async () => {
+  const email = 'test@gmail.com';
+  const password = 'password';
+
+  const response = await request(app)
+    .post('/api/users/signup')
+    .send({ email, password })
+    .expect(201);
+
+  const cookie = response.get('Set-Cookie');
+  return cookie;
+};

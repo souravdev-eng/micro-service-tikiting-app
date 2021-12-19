@@ -19,7 +19,7 @@ app.use(
     // Disable encrypted
     signed: false,
     // Only access http connection
-    secure: true,
+    secure: process.env.NODE_ENV !== 'test',
   })
 );
 // routes
