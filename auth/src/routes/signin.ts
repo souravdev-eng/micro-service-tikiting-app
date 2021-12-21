@@ -9,7 +9,7 @@ import { User } from '../models/userModel';
 const router = express.Router();
 
 router.post(
-  '/api/users/login',
+  '/api/users/signin',
   [
     body('email').isEmail().withMessage('Email must be provided.'),
     body('password')
@@ -25,12 +25,12 @@ router.post(
 
     if (!existingUser) {
       throw new BadRequestError(
-        'There is no user with this email! Please try again'
+        'There is no user with this email! Please try again',
       );
     }
     const passwordMatch = await Password.compare(
       existingUser.password,
-      password
+      password,
     );
 
     if (!passwordMatch) {
@@ -41,14 +41,14 @@ router.post(
         id: existingUser.id,
         email: existingUser.email,
       },
-      process.env.JWT_KEY!
+      process.env.JWT_KEY!,
     );
 
     req.session = {
       jwt: userJwt,
     };
     res.status(200).send(existingUser);
-  }
+  },
 );
 
 export { router as signinRoute };
