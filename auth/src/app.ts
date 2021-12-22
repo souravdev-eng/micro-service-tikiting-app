@@ -1,10 +1,9 @@
 import 'express-async-errors';
 import express from 'express';
 import cookieSession from 'cookie-session';
+import { NotFoundError, errorHandler } from '@smtick/common';
 
 import { currentUserRoute } from './routes/current-user';
-import { NotFoundError } from './errors/not-found-error';
-import { errorHandler } from './middleware/error-handler';
 import { signOutRoute } from './routes/signout';
 import { signinRoute } from './routes/signin';
 import { signupRoute } from './routes/signup';
@@ -20,7 +19,7 @@ app.use(
     signed: false,
     // Only access http connection
     secure: process.env.NODE_ENV !== 'test',
-  })
+  }),
 );
 // routes
 app.use(currentUserRoute);
