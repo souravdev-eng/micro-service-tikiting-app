@@ -1,19 +1,19 @@
 import request from 'supertest';
 import { app } from '../../app';
 
-it('should return responds with user data', async () => {
-  const cookie = await global.signup();
+it('responds with details about the current user', async () => {
+  const cookie = await global.signin();
 
-  const res = await request(app)
+  const response = await request(app)
     .get('/api/users/currentuser')
     .set('Cookie', cookie)
-    .send({})
+    .send()
     .expect(200);
 
-  expect(res.body.currentUser.email).toEqual('test@gmail.com');
+  expect(response.body.currentUser.email).toEqual('test@test.com');
 });
 
-it('should return null if user not signin', async () => {
+it('responds with null if not authenticated', async () => {
   const response = await request(app)
     .get('/api/users/currentuser')
     .send()
