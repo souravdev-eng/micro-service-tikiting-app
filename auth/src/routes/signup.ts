@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { validateRequest, BadRequestError } from '@sgtickets/common';
+import { validateRequest, BadRequestError } from '@micro-tick/common';
 
 import { User } from '../models/user';
 
@@ -35,7 +35,7 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      process.env.JWT_KEY!
+      process.env.JWT_KEY!,
     );
 
     // Store it on session object
@@ -44,7 +44,7 @@ router.post(
     };
 
     res.status(201).send(user);
-  }
+  },
 );
 
 export { router as signupRouter };

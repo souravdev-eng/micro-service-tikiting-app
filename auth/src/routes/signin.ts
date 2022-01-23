@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { validateRequest, BadRequestError } from '@sgtickets/common';
+import { validateRequest, BadRequestError } from '@micro-tick/common';
 
 import { Password } from '../services/password';
 import { User } from '../models/user';
@@ -28,7 +28,7 @@ router.post(
 
     const passwordsMatch = await Password.compare(
       existingUser.password,
-      password
+      password,
     );
     if (!passwordsMatch) {
       throw new BadRequestError('Invalid Credentials');
@@ -40,7 +40,7 @@ router.post(
         id: existingUser.id,
         email: existingUser.email,
       },
-      process.env.JWT_KEY!
+      process.env.JWT_KEY!,
     );
 
     // Store it on session object
@@ -49,7 +49,7 @@ router.post(
     };
 
     res.status(200).send(existingUser);
-  }
+  },
 );
 
 export { router as signinRouter };

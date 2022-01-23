@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { requireAuth, validateRequest } from '@sgtickets/common';
+import { requireAuth, validateRequest } from '@micro-tick/common';
 import { Ticket } from '../models/ticket';
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.post(
     await ticket.save();
 
     res.status(201).send(ticket);
-  }
+  },
 );
 
 export { router as createTicketRouter };

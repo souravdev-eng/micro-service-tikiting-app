@@ -5,7 +5,7 @@ import {
   NotFoundError,
   requireAuth,
   NotAuthorizedError,
-} from '@sgtickets/common';
+} from '@micro-tick/common';
 import { Ticket } from '../models/ticket';
 
 const router = express.Router();
@@ -38,7 +38,7 @@ router.put(
     await ticket.save();
 
     res.send(ticket);
-  }
+  },
 );
 
 export { router as updateTicketRouter };
