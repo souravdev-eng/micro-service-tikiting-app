@@ -14,3 +14,6 @@ __export(require("./middlewares/current-user"));
 __export(require("./middlewares/error-handler"));
 __export(require("./middlewares/require-auth"));
 __export(require("./middlewares/validate-request"));
+__export(require("./events/base-listener"));
+__export(require("./events/base-publisher"));
+__export(require("./events/subjects"));

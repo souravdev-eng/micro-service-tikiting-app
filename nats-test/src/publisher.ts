@@ -1,21 +1,33 @@
 import nats from 'node-nats-streaming';
+import { TicketCreatedPublisher } from './events/ticket-created-publisher';
 
 console.clear();
-//. Creating client
+
 const stan = nats.connect('ticketing', 'abc', {
-  url: 'https://localhost:4222',
+  url: 'http://localhost:4222',
 });
 
-//. After creating client we listening for connect event
-stan.on('connect', () => {
-  console.log('Publisher connecting to NATS');
+stan.on('connect', async () => {
+  console.log('Publisher connected to NATS');
 
-  //! NOTE:- In Nats publisher we only share RAW data or string
-  //. So we first covering JSON into string
-  const data = JSON.stringify({ id: '1234', title: 'Match', price: 10 });
+  const publisher = new TicketCreatedPublisher(stan);
+  try {
+    await publisher.publish({
+      id: '123',
+      title: 'concert',
+      price: 20
+    });
+  } catch (err) {
+    console.error(err);
+  }
 
-  //. NOTE:- When we publish our data we first create a "publisher chanel or name" and then the "DATA"
-  stan.publish('ticket:created', data, () => {
-    console.log('Published Event!');
-  });
+  // const data = JSON.stringify({
+  //   id: '123',
+  //   title: 'concert',
+  //   price: '$20',
+  // });
+
+  // stan.publish('TicketCreated', data, () => {
+  //   console.log('Event published');
+  // });
 });
