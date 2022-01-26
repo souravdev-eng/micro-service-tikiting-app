@@ -21,6 +21,7 @@ kind: Service
 metadata:
   name: tickets-mongo-srv
 spec:
+  type: ClusterIP
   selector:
     app: tickets-mongo
   ports:
