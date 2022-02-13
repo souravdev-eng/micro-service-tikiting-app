@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { OrderStatus } from "@micro-tick/common";
 import { TicketDoc } from "./ticket";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export { OrderStatus };
 
@@ -16,6 +17,7 @@ interface OrderDoc extends mongoose.Document {
   status: OrderStatus;
   expiresAt: Date;
   ticket: TicketDoc;
+  version: number;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
@@ -51,6 +53,10 @@ const orderSchema = new mongoose.Schema(
     },
   }
 );
+
+//. Changing version key name
+orderSchema.set("versionKey", "version");
+orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (attars: OrderAttars) => {
   return new Order(attars);
