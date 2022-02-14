@@ -11,7 +11,7 @@ var Publisher = /** @class */ (function () {
                 if (err) {
                     return reject(err);
                 }
-                console.log('Event published to subject', _this.subject);
+                console.log("Event published to subject", _this.subject);
                 resolve();
             });
         });
