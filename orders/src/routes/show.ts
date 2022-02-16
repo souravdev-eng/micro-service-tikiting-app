@@ -1,9 +1,9 @@
-import {
-  NotAuthorizedError,
-  NotFoundError,
-  requireAuth,
-} from "@micro-tick/common";
 import express, { Request, Response } from "express";
+import {
+  requireAuth,
+  NotFoundError,
+  NotAuthorizedError,
+} from "@micro-tick/common";
 import { Order } from "../models/order";
 
 const router = express.Router();

@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { requireAuth } from "@micro-tick/common";
-
 import { Order } from "../models/order";
 
 const router = express.Router();
@@ -10,7 +9,7 @@ router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
     userId: req.currentUser!.id,
   }).populate("ticket");
 
-  res.status(200).send(orders);
+  res.send(orders);
 });
 
 export { router as indexOrderRouter };

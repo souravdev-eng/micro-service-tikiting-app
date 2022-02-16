@@ -1,12 +1,11 @@
-import {
-  NotAuthorizedError,
-  NotFoundError,
-  OrderStatus,
-  requireAuth,
-} from "@micro-tick/common";
 import express, { Request, Response } from "express";
+import {
+  requireAuth,
+  NotFoundError,
+  NotAuthorizedError,
+} from "@micro-tick/common";
+import { Order, OrderStatus } from "../models/order";
 import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
-import { Order } from "../models/order";
 import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
@@ -36,6 +35,7 @@ router.delete(
         id: order.ticket.id,
       },
     });
+
     res.status(204).send(order);
   }
 );

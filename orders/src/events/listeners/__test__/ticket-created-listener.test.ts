@@ -1,6 +1,5 @@
 import { Message } from "node-nats-streaming";
 import mongoose from "mongoose";
-
 import { TicketCreatedEvent } from "@micro-tick/common";
 import { TicketCreatedListener } from "../ticket-created-listener";
 import { natsWrapper } from "../../../nats-wrapper";
@@ -42,7 +41,7 @@ it("creates and saves a ticket", async () => {
   expect(ticket!.price).toEqual(data.price);
 });
 
-it("ack's the message", async () => {
+it("acks the message", async () => {
   const { data, listener, msg } = await setup();
 
   // call the onMessage function with the data object + message object
