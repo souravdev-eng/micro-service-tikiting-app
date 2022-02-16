@@ -10,6 +10,7 @@ class NatsWrapper {
     return this._client;
   }
 
+  //? NOTE:- This connect is the seminar to "nats.connect('ticketing','123',{url:'http://localhost:400'})";
   connect(clusterId: string, clientId: string, url: string) {
     this._client = nats.connect(clusterId, clientId, { url });
 
